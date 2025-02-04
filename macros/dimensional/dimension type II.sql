@@ -40,7 +40,7 @@ with
             *,
             as_of_date,
             lag(hashdiff) over (
-                partition by {{hash_key}} 
+                partition by {{business_key}} 
                 order by as_of_date
             )   as previous_hashdiff,
             cast(
@@ -59,12 +59,12 @@ with
         select *,
             lag(as_of_date) 
                 over (
-                partition by {{hash_key}}  
+                partition by {{business_key}}  
                 order by as_of_date
             )               as previous_date,
             lead(as_of_date) 
                 over (
-                partition by {{hash_key}}  
+                partition by {{business_key}}  
                 order by as_of_date
             ) 
             -- {{ target.type }}
