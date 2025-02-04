@@ -67,9 +67,10 @@ with
                 partition by {{hash_key}}  
                 order by as_of_date
             ) 
+            -- {{ target.type }}
                 {% if target.type == "databricks" %}
                 - INTERVAL 1 microsecond     
-                {% elif target.type == "snwoflake" %}          
+                {% elif target.type == "snowflake" %}          
                 - INTERVAL '1 MICROSECONDS'
                 {% endif %}
                 as next_date
