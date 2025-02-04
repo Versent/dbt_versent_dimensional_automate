@@ -1,15 +1,15 @@
 {% macro dim(
-    hash_key,
+    dimension_name,
+    business_key,
     source,
     record_action,
     payload
     ) -%}
-{%- set bkey = hash_key|replace('hk_','bk_') -%}
-{%- set dim_key = hash_key|replace('hk_','dim_') ~ '_sid' -%}
+{%- set bkey = business_key|replace('hk_','bk_') -%}
+{%- set dim_key = 'dim_' ~ dimension_name ~ '_sid' -%}
 with 
     source as (
         select
-            {{hash_key}}, 
             {{bkey}},            
             {%- for col in payload %}
             {{col}},
@@ -107,9 +107,8 @@ with
     ),  
     final as (
         select
-            md5(concat({{ hash_key }} , "|", effective_from_datetime)) as {{dim_key}},
-            {{ hash_key }}, 
-            {{ bkey }},
+            md5(concat({{ business_key }} , "|", effective_from_datetime)) as {{dim_key}},
+            {{ business_key }},
             {%- for col in payload %}
             {{col}},
             {%- endfor %}
