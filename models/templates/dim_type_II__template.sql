@@ -2,7 +2,7 @@
 
 {%- set yaml_metadata -%}
 hash_key: hk_customer
-source: __int_dim_customers
+source: __int_dim_type_II__template
 payload:
     - customer_id
     - first_name
