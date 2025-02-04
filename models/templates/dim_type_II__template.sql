@@ -1,10 +1,10 @@
 {{ config(materialized='incremental')    }}
 
 {%- set yaml_metadata -%}
-hash_key: hk_customer
+dimension_name: customer
+business_key: customer_id
 source: __int_dim_type_II__template
 payload:
-    - customer_id
     - first_name
     - last_name
     - record_source
@@ -17,7 +17,8 @@ record_action: 'DELETE'
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
 {{ versent_automate_dbt_dimensional.dim(
-    hash_key= metadata_dict['hash_key'], 
+    dimension_name = metadata_dict['dimension_name'], 
+    business_key= metadata_dict['business_key'], 
     source = metadata_dict['source'], 
     payload= metadata_dict['payload']
     ) }}
