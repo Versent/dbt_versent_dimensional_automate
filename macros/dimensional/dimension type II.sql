@@ -66,7 +66,13 @@ with
                 over (
                 partition by {{hash_key}}  
                 order by as_of_date
-            ) - INTERVAL 1 microsecond               as next_date
+            ) 
+                {% if target.type == "databricks" %}
+                - INTERVAL 1 microsecond     
+                {% elif target.type == "snwoflake" %}          
+                - INTERVAL '1 MICROSECONDS'
+                {% endif %}
+                as next_date
              from window_functions where
             -- coalesce null previous_hashdiff with empty binary as 
             -- comparison with null will always be false 
