@@ -38,7 +38,6 @@ with
     window_functions as (
         select 
             *,
-            as_of_date,
             lag(hashdiff) over (
                 partition by {{business_key}} 
                 order by as_of_date
