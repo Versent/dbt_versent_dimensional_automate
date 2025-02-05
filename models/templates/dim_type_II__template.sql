@@ -7,7 +7,6 @@ source: __int_dim_type_II__template
 payload:
     - first_name
     - last_name
-    - record_source
     - first_order_date
     - most_recent_order_date
     - number_of_orders
