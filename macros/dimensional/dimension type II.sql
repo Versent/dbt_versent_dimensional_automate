@@ -81,14 +81,14 @@ with
     cdc as (
         select
             *,
-            if(previous_date is null, early_date, as_of_date) as effective_from_datetime,
+            iff(previous_date is null, early_date, as_of_date) as effective_from_datetime,
             
             coalesce(
                 next_date, 
                 late_date
                 )                               as effective_to_datetime,
             iff(
-                isnull(next_date ),
+                next_date is null,
                 true,
                 false
             )                                   as is_current,
@@ -106,7 +106,7 @@ with
     ),  
     final as (
         select
-            md5(concat({{ business_key }} , "|", effective_from_datetime)) as {{dim_key}},
+            md5(concat({{ business_key }} , '|', effective_from_datetime)) as {{dim_key}},
             {{ business_key }},
             {%- for col in payload %}
             {{col}},
