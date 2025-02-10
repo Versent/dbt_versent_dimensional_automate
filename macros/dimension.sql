@@ -1,17 +1,16 @@
 {% macro dim(
     name,
-    business_key,
     source,
     record_action,
     payload
     ) -%}
 {%- set bkey = business_key|replace('hk_','bk_') -%}
-{%- set dim_key = 'dim_' ~ dimension_name ~ '_sid' -%}
 with 
     source as (
         select
             {{ sid_name(name)}},
-            {{bkey}},            
+            {{ business_key_name(name)}},
+           
             {%- for col in payload %}
             {{col}},
             {%- endfor %}
