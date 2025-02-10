@@ -24,7 +24,7 @@ with
             {{ record_action }},
             {% endif %}
             {% if type2 %}
-                as_of_date, 
+                {{ type2_columns(type2) }}, 
             {% endif %}
             {{ audit_columns() }}
         from 
