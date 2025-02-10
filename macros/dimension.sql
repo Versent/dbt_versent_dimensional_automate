@@ -1,8 +1,8 @@
 {% macro dim(
     name,
     source,
-    record_action,
-    payload
+    payload,
+    type2
     ) -%}
 {%- set bkey = business_key|replace('hk_','bk_') -%}
 with 
@@ -10,10 +10,7 @@ with
         select
             {{ sid_name(name)}},
             {{ business_key_name(name)}},
-           
-            {%- for col in payload %}
-            {{col}},
-            {%- endfor %}
+            {{ payload_columns(payload)}}
 
             CAST(UPPER(md5(CONCAT(
             {%- for col in payload %}
@@ -26,9 +23,10 @@ with
             {% if record_action|length > 0 %}
             {{ record_action }},
             {% endif %}
-            as_of_date,
-            record_source,
-            load_datetime
+            {% if type2 %}
+                as_of_date, 
+            {% endif %}
+            {{ audit_columns() }}
         from 
         {{ ref(source) }}
         where

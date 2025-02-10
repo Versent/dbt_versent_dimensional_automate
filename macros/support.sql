@@ -15,3 +15,18 @@
     {{ business_key_name }}
 
 {%- endmacro %}
+{% macro payload_columns(
+    payload
+    ) -%}
+            -- payload
+    {%- for col in payload %}
+                {{col}},
+     {%- endfor %}
+{%- endmacro %}
+{% macro audit_columns(
+    
+    ) -%}
+            -- audit_columns
+                record_source,
+                load_datetime
+{%- endmacro %}
