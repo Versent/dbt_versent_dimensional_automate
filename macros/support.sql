@@ -1,7 +1,7 @@
 {% macro sid_name(
     name
     ) -%}
-    {%- set sid_name = var("dim_name")|replace('<name>',name) -%}
+    {%- set sid_name = var("sid_name")|replace('<name>',name) -%}
 
     {{ sid_name }}
 

@@ -1,5 +1,5 @@
 {% macro dim(
-    dimension_name,
+    name,
     business_key,
     source,
     record_action,
@@ -10,6 +10,7 @@
 with 
     source as (
         select
+            {{ sid_name(name)}},
             {{bkey}},            
             {%- for col in payload %}
             {{col}},
@@ -29,7 +30,8 @@ with
             as_of_date,
             record_source,
             load_datetime
-        from {{ ref(source) }}
+        from 
+        {{ ref(source) }}
         where
           -- remove the ghost as_of_date from records other than the ghost
             (TO_DATE(as_of_date) = '1900-01-01' and {{bkey}} = '00000000000000000000000000000000') or
