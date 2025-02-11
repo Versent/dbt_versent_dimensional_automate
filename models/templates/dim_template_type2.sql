@@ -9,7 +9,7 @@ payload:
     - number_of_orders
     - lifetime_value
 type2:
-    as_of_date: as_of_date
+    as_of_date: as_of_date_value
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 {{ versent_automate_dbt_dimensional.dim(

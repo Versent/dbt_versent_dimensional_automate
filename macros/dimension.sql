@@ -11,20 +11,20 @@ with
             {{ sid_name(name)}},
             {{ business_key_name(name)}},
             {{ payload_columns(payload)}}
-
-            CAST(UPPER(md5(CONCAT(
-            {%- for col in payload %}
-            IFNULL(NULLIF(TRIM(CAST({{col}} AS VARCHAR(16))), ''), '^^'){% if not loop.last %}, '||',{% endif %}
-            {%- endfor %}
-            {% if record_action|length > 0 %}
-            , '||',{{ record_action }}
-            {% endif %}            
-            ))) AS binary) as hashdiff,
+            -- hashdiff
+                CAST(UPPER(md5(CONCAT(
+                {%- for col in payload %}
+                IFNULL(NULLIF(TRIM(CAST({{col}} AS VARCHAR(16))), ''), '^^'){% if not loop.last %}, '||',{% endif %}
+                {%- endfor %}
+                {% if record_action|length > 0 %}
+                , '||',{{ record_action }}
+                {% endif %}            
+                ))) AS binary) as hashdiff,
             {% if record_action|length > 0 %}
             {{ record_action }},
             {% endif %}
             {% if type2 %}
-                {{ type2_columns(type2) }}, 
+            {{ type2_columns(type2) }}
             {% endif %}
             {{ audit_columns() }}
         from 
@@ -33,50 +33,9 @@ with
           -- remove the ghost as_of_date from records other than the ghost
             (TO_DATE(as_of_date) = '1900-01-01' and {{bkey}} = '00000000000000000000000000000000') or
             TO_DATE(as_of_date) <> '1900-01-01'        
-        ),
-    window_functions as (
-        select 
-            *,
-            lag(hashdiff) over (
-                partition by {{business_key}} 
-                order by as_of_date
-            )   as previous_hashdiff,
-            cast(
-                '1900-01-01 00:00:01' 
-                as timestamp
-            )                                   as early_date,
-             cast(
-                '2999-01-01 00:00:01' 
-                as timestamp
-                )                               as late_date                                      
-            
-        from 
-            source
+        )
     ),
-    deltas as (
-        select *,
-            lag(as_of_date) 
-                over (
-                partition by {{business_key}}  
-                order by as_of_date
-            )               as previous_date,
-            lead(as_of_date) 
-                over (
-                partition by {{business_key}}  
-                order by as_of_date
-            ) 
-            -- {{ target.type }}
-                {% if target.type == "databricks" %}
-                - INTERVAL 1 microsecond     
-                {% elif target.type == "snowflake" %}          
-                - INTERVAL '1 MICROSECONDS'
-                {% endif %}
-                as next_date
-             from window_functions where
-            -- coalesce null previous_hashdiff with empty binary as 
-            -- comparison with null will always be false 
-                hashdiff <> coalesce(previous_hashdiff,cast('' as binary))
-    ),
+    {%- if type2 -%}
     cdc as (
         select
             *,
@@ -101,8 +60,9 @@ with
                 false                           as is_deleted
             {% endif %} 
         from
-            deltas
-    ),  
+            source
+        ),  
+    {%- endif -%}
     final as (
         select
             md5(concat({{ business_key }} , '|', effective_from_datetime)) as {{dim_key}},
@@ -122,7 +82,11 @@ with
                 '{{source}}'                        as record_source,
                 current_timestamp()                 as load_datetime
         from
+            {%- if type2 -%}
             cdc
+            {%- else -%}
+            source
+            {%- endif%}
         where
             -- row_num = 1 and 
             1=1

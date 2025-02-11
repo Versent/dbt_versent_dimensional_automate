@@ -30,9 +30,3 @@
                 record_source,
                 load_datetime
 {%- endmacro %}
-{% macro type2_columns(
-    type2
-    ) -%}
-            -- type2 columns
-                as_of_date,
-{%- endmacro %}
