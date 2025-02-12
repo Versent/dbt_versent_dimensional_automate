@@ -13,17 +13,18 @@
     cast('1900-01-01 00:00:01'   as timestamp)
 {%- endmacro %}
 {%- macro late_date() -%}
-    cast('2999-01-01 00:00:01'   as timestamp) as late_date,  
+    cast('2999-01-01 00:00:01'   as timestamp)
 {%- endmacro %}  
 {%- macro previous_date( 
     business_key,
     as_of_date_source
     ) -%}
-    lag(as_of_date) 
+    lag({{ as_of_date_source }} ) 
             over (
             partition by {{business_key}}   
             order by {{ as_of_date_source }} 
-{%- endmacro -%}
+            )
+    {%- endmacro -%}
 {%- macro next_date( 
     business_key,
     as_of_date_source
@@ -31,7 +32,7 @@
     -%}
     lead({{ as_of_date_source }} ) 
     over (
-        partition by {{business_key}}  
+        partition by {{ business_key }}  
         order by {{ as_of_date_source }} 
     ) 
     -- {{ target.type }}
@@ -40,51 +41,45 @@
         {%- elif target.type == "snowflake" -%}          
         - INTERVAL '1 MICROSECONDS'
         {% endif %}
-{%- endmacro %}  
+    {%- endmacro %}  
 {%- macro effective_from_datetime(
     business_key,
     as_of_date_source
     ) -%}
     iff(
     -- previous_date
-        {{ previous_date(business_key, as_of_date)}}
-    is null, 
-    {{ early_date() }}, 
-    as_of_date) as effective_from_datetime,
- -%}
+        {{ previous_date(business_key, as_of_date_source)}}
+        is null, 
+        {{ early_date() }}, 
+        as_of_date)
 
-{%- endmacro %}  
+
+    {%- endmacro %}  
 {%- macro effective_to_datetime(
     business_key,
     as_of_date_source
     ) -%}
     coalesce(
         -- next_date - 1 very small bit
-            {{ next_date(business_key_name, as_of_date)}} 
+            {{ next_date(business_key, as_of_date_source)}} 
             -- {{ target.type }}
             {% if target.type == "databricks" %}
             - INTERVAL 1 microsecond     
             {% elif target.type == "snowflake" %}          
             - INTERVAL '1 MICROSECONDS'
             {% endif %}, 
-        late_date
+        {{ late_date() }}
         )
 
-{%- endmacro%}
+    {%- endmacro%}
 {%- macro is_current(
     business_key,
     as_of_date_source
     ) -%}
     iff(
         -- next_date
-        (
-            lead(as_of_date) 
-                over (
-                partition by customer_id  
-                order by as_of_date
-                ) 
-        )is null,
+        {{ next_date(business_key, as_of_date_source)}} is null,
         true,
         false
     )    
-{%- endmacro%}                               
+    {%- endmacro%}                               
