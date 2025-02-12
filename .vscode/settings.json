@@ -1,0 +1,23 @@
+{
+    "sqltools.connections": [
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "Jaffle Shop",
+            "account": "VVSPJUX-VERSENT_PARTNER",
+            "username": "timothy.napier@versent.com.au",
+            "password": "Versent1234!",
+            "database": "raw",
+            "warehouse": "load_wh"
+        }
+    ],
+    "dbt.dbtIntegration": "core"
+}

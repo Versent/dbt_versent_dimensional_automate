@@ -1,4 +1,4 @@
-{% macro dim(
+{% macro dim_fred(
     dimension_name,
     business_key,
     source,

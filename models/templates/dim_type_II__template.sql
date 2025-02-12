@@ -15,7 +15,7 @@ record_action: 'DELETE'
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ versent_automate_dbt_dimensional.dim(
+{{ versent_automate_dbt_dimensional.dim_fred(
     dimension_name = metadata_dict['dimension_name'], 
     business_key= metadata_dict['business_key'], 
     source = metadata_dict['source'], 
