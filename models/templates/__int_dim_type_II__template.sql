@@ -2,7 +2,7 @@ with
     seed as (select 1 as business_key),
     customer_1 as (
         select
-            business_key as customer_id,
+            business_key as bk_customer,
             'Tim' as first_name,
             'Napier' as last_name,
             'seed' record_source,
