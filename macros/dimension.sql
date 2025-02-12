@@ -4,12 +4,12 @@
     payload,
     type2
     ) -%}
-{%- set bkey = business_key|replace('hk_','bk_') -%}
+{%- set business_key = business_key_name(name) -%}
 with 
     source as (
         select
             {{ sid_name(name)}},
-            {{ business_key_name(name)}},
+            {{ business_key}},
             {{ payload_columns(payload)}}
             -- hashdiff
                 CAST(UPPER(md5(CONCAT(
@@ -24,7 +24,7 @@ with
             {{ record_action }},
             {% endif %}
             {% if type2 %}
-            {{ type2_columns(type2) }}
+            {{ type2_columns(business_key, type2) }}
             {% endif %}
             {{ audit_columns() }}
         from 
