@@ -19,7 +19,7 @@
     business_key,
     as_of_date_source
     ) -%}
-    lag(as_of_date) 
+    lag({{ as_of_date_source }} ) 
             over (
             partition by {{business_key}}   
             order by {{ as_of_date_source }} 
@@ -47,11 +47,11 @@
     ) -%}
     iff(
     -- previous_date
-        {{ previous_date(business_key, as_of_date)}}
-    is null, 
-    {{ early_date() }}, 
-    as_of_date) as effective_from_datetime,
- -%}
+        {{ previous_date(business_key, as_of_date_source)}}
+        is null, 
+        {{ early_date() }}, 
+        as_of_date)
+
 
 {%- endmacro %}  
 {%- macro effective_to_datetime(
