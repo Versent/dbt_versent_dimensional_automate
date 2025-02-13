@@ -38,7 +38,10 @@ with
     ),
     final as (
         select
-            md5(concat({{ business_key }} , '|', effective_from_datetime)) as {{sid}},
+            md5(concat(
+                {{ business_key }} 
+                {%- if type2 -%}, '|', effective_from_datetime{%- endif%}
+                 )) as {{sid}},
             {{ business_key }},
             {%- for col in payload %}
             {{col}},
