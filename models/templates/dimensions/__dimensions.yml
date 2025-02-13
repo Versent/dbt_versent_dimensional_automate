@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: dim_template_type1
+    columns:
+      - name: dim_customer_sid
+        tests:
+          - unique
+          - not_null
+  - name: dim_template_type2
+    columns:
+      - name: dim_customer_sid
+        tests:
+          - unique
+          - not_null
+      - name: bk_customer
+        tests:
+          - overlapping_dates:
+              effective_from: effective_from_datetime
+              effective_to: effective_to_datetime
