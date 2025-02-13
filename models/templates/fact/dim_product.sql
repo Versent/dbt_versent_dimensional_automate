@@ -17,7 +17,8 @@ with dim_product as (
     union all 
         select 105, 'monitor 24-inch', 'electronics', 300.00, timestamp '1900-01-01 00:00:00', timestamp '2999-01-01 00:00:00', true
 )
-select 
+select
+    concat('SID_', bk_product) as dim_product_sid,
     * 
 from 
     dim_product

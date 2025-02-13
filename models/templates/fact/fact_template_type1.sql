@@ -12,7 +12,7 @@ primary_key:        bk_sales_order
 # dimensions
 type1:
     dimensions:
-        - dim_date:
+        - date:
             question: when
             join_key: bk_date
             role_playing:
@@ -20,10 +20,10 @@ type1:
                 delivery_date:
 type2:
     dimensions:
-        - dim_customer:
+        - customer:
             question: who
             join_key: bk_customer
-        - dim_product:
+        - product:
             question: what
             join_key: bk_product
             role_playing:
@@ -35,17 +35,17 @@ payload:
     - quantity_sold
     - total_sales_amount
     - discount_amount
-    - tax_amount
-    - net_sales_amt:  total_sales_amount - discount_amount      
+    - tax_amount   
 
 {%- endset -%}
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
 {{ fact(
-    source=metadata_dict['source'],
-    name=metadata_dict['name'],
-    primary_key=metadata_dict['primary_key'],
-    dimensions=metadata_dict['dimensions'],
-    payload=metadata_dict['payload'],
+    source = metadata_dict['source'],
+    name = metadata_dict['name'],
+    primary_key = metadata_dict['primary_key'],
+    type1_dims = metadata_dict['type1'],
+    type2_dims = metadata_dict['type2'],
+    payload = metadata_dict['payload'],
 ) }}

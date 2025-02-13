@@ -7,6 +7,15 @@
 
 {%- endmacro %}
 
+{% macro dimension_table_name(
+    name
+    ) -%}
+    {%- set dimension_name = var("dimension_table_name")|replace('<name>',name) -%}
+
+    {{ dimension_name }}
+
+{%- endmacro %}
+
 {% macro business_key_name(
     name
     ) -%}

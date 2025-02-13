@@ -1,6 +1,6 @@
 with 
     dim_date as (
-        select 20240101 as dim_date_sid, 
+        select 20240101 as bk_date, 
             '2024-01-01' as calendar_date, 
             2024 as fiscal_year, 
             'q3' as fiscal_quarter, 
@@ -17,6 +17,7 @@ with
             select 20240106, '2024-01-06', 2024, 'q3', 'january'
 )
 select 
+    concat('SID_', bk_date) as dim_date_sid,
     * 
 from 
     dim_date
