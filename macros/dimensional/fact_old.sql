@@ -1,4 +1,4 @@
-{% macro fact(
+{% macro fact_old(
     hash_key,
     source,
     as_at_date,
