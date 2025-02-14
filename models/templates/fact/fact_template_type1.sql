@@ -27,8 +27,8 @@ type2:
             question: what
             join_key: bk_product
             role_playing:
-                manufacturing_products:    
-    dimension_as_of_date: bk_order_date  
+                manufacturing_product:    
+    dimension_as_of_date: load_datetime  
        
 
 payload:

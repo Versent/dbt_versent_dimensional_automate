@@ -29,7 +29,7 @@
     ) -%}
             -- payload
     {%- for col in payload %}
-                {{col}},
+                {{col}}{%- if not loop.last %}, {% endif %}
      {%- endfor %}
 {%- endmacro %}
 {% macro audit_columns(
