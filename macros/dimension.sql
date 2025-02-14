@@ -11,7 +11,7 @@ with
     source as (
         select
             {{ business_key}},
-            {{ payload_columns(payload)}}
+            {{ payload_columns(payload)}},
             -- hashdiff
                 CAST(UPPER(md5(CONCAT(
                 {%- for col in payload %}
