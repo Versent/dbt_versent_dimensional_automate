@@ -28,6 +28,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 vars:
 # versent dimensional 
   # dimensions
+    dimension_table_name: dim_<name>
     business_key_name: bk_<name>
   # facts
     include_business_keys: y

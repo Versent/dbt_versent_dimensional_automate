@@ -1,0 +1,51 @@
+-- depends_on: {{ ref('__int_fact__template') }}
+{{ config(
+    materialized = 'table',
+    unique_key = 'bk_sales_order'
+)}}
+
+{%- set yaml_metadata -%}
+source:             __int_fact__template
+name:               sales_order
+primary_key:        bk_sales_order
+
+# dimensions
+type1:
+    dimensions:
+        - date:
+            question: when
+            join_key: bk_date
+            role_playing:
+                order_date:     
+                delivery_date:
+type2:
+    dimensions:
+        - customer:
+            question: who
+            join_key: bk_customer
+        - product:
+            question: what
+            join_key: bk_product
+            role_playing:
+                manufacturing_product:    
+    dimension_as_of_date: load_datetime  
+       
+
+payload:
+    - quantity_sold
+    - total_sales_amount
+    - discount_amount
+    - tax_amount   
+
+{%- endset -%}
+
+{% set metadata_dict = fromyaml(yaml_metadata) %}
+
+{{ fact(
+    source = metadata_dict['source'],
+    name = metadata_dict['name'],
+    primary_key = metadata_dict['primary_key'],
+    type1_dims = metadata_dict['type1'],
+    type2_dims = metadata_dict['type2'],
+    payload = metadata_dict['payload'],
+) }}
