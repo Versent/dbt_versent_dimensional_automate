@@ -33,9 +33,14 @@
      {%- endfor %}
 {%- endmacro %}
 {% macro audit_columns(
-    
+    source=None
     ) -%}
             -- audit_columns
+        {%- if source %}
+                {{ source }}.record_source,
+                {{ source }}.load_datetime
+        {%- else %}
                 record_source,
                 load_datetime
+        {%- endif -%}
 {%- endmacro %}

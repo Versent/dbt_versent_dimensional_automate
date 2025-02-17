@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: fact_template_type1
+    columns:
+      - name: bk_sales_order
+        tests:
+          - unique
+          - not_null

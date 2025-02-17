@@ -21,8 +21,7 @@ with
         -- Add Type 2 dimension columns (if type 2 dims exist)
         {{ dimension_columns(type2_dims) }}
         {{ payload_columns(payload)}},
-        current_timestamp() as load_datetime,
-        '{{ source }}' as record_source
+        {{ audit_columns('bridge') }}
     from
         bridge
         -- join Type 1 Dimensions (if they exist)

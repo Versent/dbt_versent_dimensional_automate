@@ -4,8 +4,10 @@
     ) -%}
     -- type2 columns
             {%- set as_of_date_source = type2.as_of_date %}
-            {{ effective_from_datetime(business_key, as_of_date_source)}}  as effective_from_datetime,
-            {{ effective_to_datetime(business_key, as_of_date_source)}}  as effective_to_datetime,
+            {%- set effective_from = var('effective_from_name', 'effective_from') -%}
+            {%- set effective_to = var('effective_to_name', 'effective_to') %}                  
+            {{ effective_from_datetime(business_key, as_of_date_source)}}  as {{ effective_from }},
+            {{ effective_to_datetime(business_key, as_of_date_source)}}  as {{ effective_to }},
             {{ is_current(business_key, as_of_date_source)}}  as is_current,
 
 {%- endmacro %}

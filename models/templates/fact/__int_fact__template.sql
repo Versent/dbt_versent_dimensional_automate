@@ -26,6 +26,7 @@ with sales_order as (
         5, 20240105, 20240106, 105, 505, 305, 4, 200.00, 15.00, 18.00, 185.00, cast('2024-01-05 00:00:00'   as timestamp)
 )
 select
-    *
+    *,
+    '__int_fact__template' as record_source
 from
     sales_order
