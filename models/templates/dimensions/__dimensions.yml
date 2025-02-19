@@ -16,5 +16,5 @@ models:
       - name: bk_customer
         tests:
           - overlapping_dates:
-              effective_from: effective_from_datetime
-              effective_to: effective_to_datetime
+              effective_from: effective_from_timestamp
+              effective_to: effective_from_timestamp

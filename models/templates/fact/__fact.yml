@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: fact_template_type1
+    columns:
+      - name: bk_sales_order
+        tests:
+          - unique
+          - not_null
+         
+      - name: dim_customer_sid
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: dim_customer_sid
+
+      - name: dim_manufacturing_product_sid
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: dim_product_sid
+
+      - name: quantity_sold
+        tests:
+          - not_null

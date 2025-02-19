@@ -40,7 +40,7 @@ with
         select
             md5(concat(
                 {{ business_key }} 
-                {%- if type2 -%}, '|', effective_from_datetime{%- endif%}
+                {%- if type2 -%}, '|', {{ effective_date_column('from') }} {%- endif%}
                  )) as {{sid}},
             {{ business_key }},
             {%- for col in payload %}
@@ -48,8 +48,8 @@ with
             {%- endfor %}
             {%- if type2 -%}
             -- cdc columns
-                effective_from_datetime,
-                effective_to_datetime,
+                {{ effective_date_column('from') }},
+                {{ effective_date_column('to') }},
                 is_current,
             {%- endif -%}
             -- audit columns
