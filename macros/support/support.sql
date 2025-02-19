@@ -35,12 +35,22 @@
 {% macro audit_columns(
     source=None
     ) -%}
-            -- audit_columns
+
+        -- audit_columns
         {%- if source %}
-                {{ source }}.record_source,
-                {{ source }}.load_datetime
-        {%- else %}
-                record_source,
-                load_datetime
+                {% set qualifier = source ~ '.' %}
+        {%- endif %}
+            {{ qualifier }}record_source,
+            {{ qualifier }}load_datetime
+{%- endmacro %}
+{% macro effective_date_column(
+    type
+    ) -%}
+        {%- if type == 'from' -%}
+            {{ var('effective_from_name', 'effective_from') }}
+        {%- elif type == 'to' -%}
+            {{ var('effective_to_name', 'effective_to') }}
+        {%- else -%}
+            {{ exceptions.raise_compiler_error("Invalid type passed to effective_date_column. Expecting 'from' or 'to'.") }}
         {%- endif -%}
 {%- endmacro %}

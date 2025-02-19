@@ -5,8 +5,6 @@
     type2
     ) -%}
 {%- set business_key = business_key_name(name) -%}
-{%- set effective_from = var('effective_from_name', 'effective_from') -%}
-{%- set effective_to = var('effective_to_name', 'effective_to') -%}       
 
 {%- set sid = sid_name(name) -%}
 with 
@@ -42,7 +40,7 @@ with
         select
             md5(concat(
                 {{ business_key }} 
-                {%- if type2 -%}, '|', {{ effective_from }} {%- endif%}
+                {%- if type2 -%}, '|', {{ effective_date_column('from') }} {%- endif%}
                  )) as {{sid}},
             {{ business_key }},
             {%- for col in payload %}
@@ -50,8 +48,8 @@ with
             {%- endfor %}
             {%- if type2 -%}
             -- cdc columns
-                {{ effective_from }},
-                {{ effective_to }},
+                {{ effective_date_column('from') }},
+                {{ effective_date_column('to') }},
                 is_current,
             {%- endif -%}
             -- audit columns

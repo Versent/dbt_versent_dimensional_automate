@@ -33,9 +33,7 @@ with
 
 {% macro join_dimensions(dimensions, type) -%}
     {%- if type == 'type2' -%}
-        {%- set dim_as_of_date = dimensions.get('dimension_as_of_date') -%}
-        {%- set effective_from = var('effective_from_name', 'effective_from') -%}
-        {%- set effective_to = var('effective_to_name', 'effective_to') -%}       
+        {%- set dim_as_of_date = dimensions.get('dimension_as_of_date') -%}      
     {%- endif -%}
 
     {%- if dimensions.get('dimensions') -%}
@@ -44,17 +42,19 @@ with
                 {%- set dim_table_name = dimension_table_name(dim_name) -%}
                 {%- if properties.get('role_playing') -%}
                     {% for alias, _ in properties['role_playing'].items() %}
-                    left join {{ dim_table_name }} AS {{ alias }}
-                        on bridge.{{ business_key_name(alias) }} = {{ alias }}.{{ properties['join_key'] }}
-                        {% if type == 'type2' and dim_as_of_date -%}
-                        and bridge.{{ dim_as_of_date }} between {{ alias }}.{{ effective_from }} and {{ alias }}.{{ effective_to }} 
+                    left join 
+                        {{ dim_table_name }} AS {{ alias }}
+                            on bridge.{{ business_key_name(alias) }} = {{ alias }}.{{ properties['join_key'] }}
+                            {% if type == 'type2' and dim_as_of_date -%}
+                            and bridge.{{ dim_as_of_date }} between {{ alias }}.{{ effective_date_column('from') }} and {{ alias }}.{{ effective_date_column('to') }} 
                         {%- endif -%}                        
                     {%- endfor -%}
                 {%- else -%}
-                    left join {{ dim_table_name }}
-                        on bridge.{{ properties['join_key'] }} = {{ dim_table_name }}.{{ properties['join_key'] }}
-                        {% if type == 'type2' and dim_as_of_date -%}
-                        and bridge.{{ dim_as_of_date }} between {{ dim_table_name }}.{{ effective_from }} and {{ dim_table_name }}.{{ effective_to }} 
+                    left join 
+                        {{ dim_table_name }}
+                            on bridge.{{ properties['join_key'] }} = {{ dim_table_name }}.{{ properties['join_key'] }}
+                            {% if type == 'type2' and dim_as_of_date -%}
+                            and bridge.{{ dim_as_of_date }} between {{ dim_table_name }}.{{ effective_date_column('from') }} and {{ dim_table_name }}.{{ effective_date_column('to') }} 
                         {%- endif -%}
                 {%- endif -%}
             {%- endfor -%}
