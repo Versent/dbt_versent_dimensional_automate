@@ -88,6 +88,10 @@ Parameters:
  - name (string): The name of the fact table.
  - primary_key (string): The name of the primary key column.
  - type1_dimensions (list): A list of Type 1 dimensions.
+    - question (string) - Represents the business question that this dimension answers.
+    - join_key (string) - Primary Key used to join the fact table to the dimension.
+    - role_playing (dictionary, optional) = Specifies role-playing columns for dimension that server multiple contextual roles in
+                                            in the fact table
  - type2_dimensions (list): A list of Type 2 dimensions.
  - payload (list): A list of measure columns.
 
