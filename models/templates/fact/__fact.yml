@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fact_template_type1
+  - name: fact_template
     columns:
       - name: bk_sales_order
         tests:
