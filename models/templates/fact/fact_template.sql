@@ -30,7 +30,6 @@ type2:
                 manufacturing_product:    
     dimension_as_of_date: load_datetime  
        
-
 payload:
     - quantity_sold
     - total_sales_amount
