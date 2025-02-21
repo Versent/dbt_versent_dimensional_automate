@@ -14,7 +14,7 @@ What does this package offer?
 
 ### Table of Contents
 - [dim Macro (Type 1 or Type 2)](#dim-macro-type-1-or-type-2)
-- [fact](#fact)
+- [fact](#fact-macro)
 
 ## dim Macro (Type 1 or Type 2)
 
