@@ -13,8 +13,8 @@ What does this package offer?
  -  Scalability - Designed to handle large datasets efficiently while supporting multi-threaded execution.
 
 ### Table of Contents
-- dim Macro (Type 1 or Type 2)
-- fact
+- [dim Macro (Type 1 or Type 2)](dim-macro-type-1-or-type-2)
+- [fact](fact)
 
 ## dim Macro (Type 1 or Type 2)
 
