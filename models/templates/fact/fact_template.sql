@@ -40,7 +40,7 @@ payload:
 
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
-{{ fact(
+{{ versent_automate_dbt_dimensional.fact(
     source = metadata_dict['source'],
     name = metadata_dict['name'],
     primary_key = metadata_dict['primary_key'],

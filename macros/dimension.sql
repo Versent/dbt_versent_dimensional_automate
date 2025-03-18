@@ -4,14 +4,14 @@
     payload,
     type2
     ) -%}
-{%- set business_key = business_key_name(name) -%}
+{%- set business_key = versent_automate_dbt_dimensional.business_key_name(name) -%}
 
-{%- set sid = sid_name(name) -%}
+{%- set sid = versent_automate_dbt_dimensional.sid_name(name) -%}
 with 
     source as (
         select
             {{ business_key}},
-            {{ payload_columns(payload)}},
+            {{ versent_automate_dbt_dimensional.payload_columns(payload)}},
             -- hashdiff
                 CAST(UPPER(md5(CONCAT(
                 {%- for col in payload %}
@@ -27,7 +27,7 @@ with
             {% if type2 %}
             {{ type2_columns(business_key, type2) }}
             {% endif %}
-            {{ audit_columns() }}
+            {{ versent_automate_dbt_dimensional.audit_columns() }}
         from 
         {{ ref(source) }}
         where
@@ -40,7 +40,7 @@ with
         select
             md5(concat(
                 {{ business_key }} 
-                {%- if type2 -%}, '|', {{ effective_date_column('from') }} {%- endif%}
+                {%- if type2 -%}, '|', {{ versent_automate_dbt_dimensional.effective_date_column('from') }} {%- endif%}
                  )) as {{sid}},
             {{ business_key }},
             {%- for col in payload %}
@@ -48,8 +48,8 @@ with
             {%- endfor %}
             {%- if type2 -%}
             -- cdc columns
-                {{ effective_date_column('from') }},
-                {{ effective_date_column('to') }},
+                {{ versent_automate_dbt_dimensional.effective_date_column('from') }},
+                {{ versent_automate_dbt_dimensional.effective_date_column('to') }},
                 is_current,
             {%- endif -%}
             -- audit columns
