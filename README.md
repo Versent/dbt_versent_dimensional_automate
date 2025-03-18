@@ -12,7 +12,20 @@ What does this package offer?
  -  Seamless Integration with dbt - Uses dbt's built-in features for version control, documentation, and testing.
  -  Scalability - Designed to handle large datasets efficiently while supporting multi-threaded execution.
 
-### Table of Contents
+
+## Installation
+dbt version required: >=1.0.0, <2.0.0
+
+Include the following in your packages.yml file:
+
+```bash
+packages:
+  - git: "https://{{env_var('DBT_ENV_SECRET_GIT_CREDENTIAL')}}@github.com/Versent/versent_automate_dbt_dimensional.git"
+```
+
+Run dbt deps to install the package.
+
+## Table of Contents
 - [dim Macro (Type 1 or Type 2)](#dim-macro-type-1-or-type-2)
 - [fact](#fact-macro)
 
