@@ -40,8 +40,8 @@
         {%- if source %}
                 {% set qualifier = source ~ '.' %}
         {%- endif %}
-            {{ qualifier }}record_source,
-            {{ qualifier }}load_datetime
+            {{ qualifier }}{{ var('record_source') }},
+            {{ qualifier }}{{ var('load_datetime') }}
 {%- endmacro %}
 {% macro effective_date_column(
     type

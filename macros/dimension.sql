@@ -5,8 +5,9 @@
     type2
     ) -%}
 {%- set business_key = versent_automate_dbt_dimensional.business_key_name(name) -%}
-
 {%- set sid = versent_automate_dbt_dimensional.sid_name(name) -%}
+{%- set sid_type = var('sid_type', 'STRING') %}
+
 with 
     source as (
         select
@@ -38,10 +39,10 @@ with
     ),
     final as (
         select
-            md5(concat(
+            cast(md5(concat(
                 {{ business_key }} 
                 {%- if type2 -%}, '|', {{ versent_automate_dbt_dimensional.effective_date_column('from') }} {%- endif%}
-                 )) as {{sid}},
+                 )) as {{sid_type}}) as {{sid}},
             {{ business_key }},
             {%- for col in payload %}
             {{col}},
@@ -53,8 +54,7 @@ with
                 is_current,
             {%- endif -%}
             -- audit columns
-                '{{source}}'                        as record_source,
-                current_timestamp()                 as load_datetime
+            {{ versent_automate_dbt_dimensional.audit_columns() }}
         from
             source
         where
