@@ -7,6 +7,19 @@
 {%- set business_key = versent_automate_dbt_dimensional.business_key_name(name) -%}
 {%- set sid = versent_automate_dbt_dimensional.sid_name(name) -%}
 {%- set sid_type = var('sid_type', 'STRING') %}
+{%- set hash_algorithm = var('hash_algorithm', 'MD5(<column>)') -%}
+
+{%- set sid_column_expression = "CONCAT(" ~ business_key %}
+{%- if type2 %}
+    {%- set sid_column_expression = sid_column_expression ~ ", '|', " ~ versent_automate_dbt_dimensional.effective_date_column('from') %}
+{%- endif %}
+{%- set sid_column_expression = sid_column_expression ~ ")" %}
+
+{%- if hash_algorithm == "automate_dv.hash" %}
+    {%- set hash_expression = automate_dv.hash(sid_column_expression,sid) %}
+{%- else %}
+    {%- set hash_expression = hash_algorithm.replace('<column>', sid_column_expression) %}
+{%- endif %}
 
 with 
     source as (
@@ -39,10 +52,11 @@ with
     ),
     final as (
         select
-            cast(md5(concat(
-                {{ business_key }} 
-                {%- if type2 -%}, '|', {{ versent_automate_dbt_dimensional.effective_date_column('from') }} {%- endif%}
-                 )) as {{sid_type}}) as {{sid}},
+        {%- if hash_algorithm == "automate_dv.hash" %}
+            {{ hash_expression }},
+        {%- else %}
+            cast({{ hash_expression }} as {{ sid_type }}) as {{ sid }},
+        {%- endif %}
             {{ business_key }},
             {%- for col in payload %}
             {{col}},
