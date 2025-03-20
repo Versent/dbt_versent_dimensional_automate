@@ -15,6 +15,12 @@
 {%- endif %}
 {%- set sid_column_expression = sid_column_expression ~ ")" %}
 
+{%- if hash_algorithm == "automate_dv.hash" %}
+    {%- set hash_expression = automate_dv.hash(sid_column_expression,sid) %}
+{%- else %}
+    {%- set hash_expression = hash_algorithm.replace('<column>', sid_column_expression) %}
+{%- endif %}
+
 with 
     source as (
         select
@@ -46,7 +52,11 @@ with
     ),
     final as (
         select
-            cast({{ hash_algorithm.replace('<column>', sid_column_expression) }} as {{ sid_type }}) as {{ sid }},
+        {%- if hash_algorithm == "automate_dv.hash" %}
+            {{ hash_expression }},
+        {%- else %}
+            cast({{ hash_expression }} as {{ sid_type }}) as {{ sid }},
+        {%- endif %}
             {{ business_key }},
             {%- for col in payload %}
             {{col}},
