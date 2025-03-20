@@ -35,6 +35,7 @@ vars:
   # common
     sid_name: dim_<name>_sid
     sid_type: binary(16)
+    hash_algorithm: "MD5(<column>)"
     # type 2 behaviour
     effective_from_name: effective_from_timestamp
     effective_to_name: effective_to_timestamp
