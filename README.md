@@ -162,3 +162,12 @@ payload:
 ) }}
 ```
 
+## Example Templates
+
+We provide example models to demonstrate how to use the macros in this package. 
+These are stored under **models/templates/** but use the **.sqt** extension instead of **.sql** to prevent them from being built automatically when the package is installed.
+
+### How to Use the Templates
+1. Navigate to the models/templates/ directory.
+2. Rename the desired .sqt file to .sql.
+3. Run dbt build to test it.
