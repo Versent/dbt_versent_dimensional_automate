@@ -2,8 +2,8 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'versent_automate_dbt_dimensional'
-version: '1.0.0'
+name: 'dbt_versent_dimensional_automate'
+require-dbt-version:[">=1.0.0", "<2.0.0"]
 config-version: 2
 
     

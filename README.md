@@ -20,7 +20,7 @@ Include the following in your packages.yml file:
 
 ```bash
 packages:
-  - git: "https://{{env_var('DBT_ENV_SECRET_GIT_CREDENTIAL')}}@github.com/Versent/versent_automate_dbt_dimensional.git"
+  - git: "https://{{env_var('DBT_ENV_SECRET_GIT_CREDENTIAL')}}@github.com/Versent/dbt_versent_dimensional_automate.git"
 ```
 
 Run dbt deps to install the package.
