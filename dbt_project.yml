@@ -3,7 +3,7 @@
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 name: 'dbt_versent_dimensional_automate'
-require-dbt-version:[">=1.0.0", "<2.0.0"]
+require-dbt-version: [">=1.0.0", "<2.0.0"]
 config-version: 2
 
     
@@ -58,7 +58,7 @@ vars:
 # using the `{{ config(...) }}` macro.
 
 models:
-  versent_automate_dbt_dimensional:
+  dbt_versent_dimensional_automate:
     # Applies to all files under models/example/
     models:
       +materialized: table
