@@ -4,14 +4,14 @@
     payload,
     type2
     ) -%}
-{%- set business_key = versent_automate_dbt_dimensional.business_key_name(name) -%}
-{%- set sid = versent_automate_dbt_dimensional.sid_name(name) -%}
+{%- set business_key = dbt_versent_dimensional_automate.business_key_name(name) -%}
+{%- set sid = dbt_versent_dimensional_automate.sid_name(name) -%}
 {%- set sid_type = var('sid_type', 'STRING') %}
 {%- set hash_algorithm = var('hash_algorithm', 'MD5(<column>)') -%}
 
 {%- set sid_column_expression = "CONCAT(" ~ business_key %}
 {%- if type2 %}
-    {%- set sid_column_expression = sid_column_expression ~ ", '|', " ~ versent_automate_dbt_dimensional.effective_date_column('from') %}
+    {%- set sid_column_expression = sid_column_expression ~ ", '|', " ~ dbt_versent_dimensional_automate.effective_date_column('from') %}
 {%- endif %}
 {%- set sid_column_expression = sid_column_expression ~ ")" %}
 
@@ -25,7 +25,7 @@ with
     source as (
         select
             {{ business_key}},
-            {{ versent_automate_dbt_dimensional.payload_columns(payload)}},
+            {{ dbt_versent_dimensional_automate.payload_columns(payload)}},
             -- hashdiff
                 CAST(UPPER(md5(CONCAT(
                 {%- for col in payload %}
@@ -41,7 +41,7 @@ with
             {% if type2 %}
             {{ type2_columns(business_key, type2) }}
             {% endif %}
-            {{ versent_automate_dbt_dimensional.audit_columns() }}
+            {{ dbt_versent_dimensional_automate.audit_columns() }}
         from 
         {{ ref(source) }}
         where
@@ -63,12 +63,12 @@ with
             {%- endfor %}
             {%- if type2 -%}
             -- cdc columns
-                {{ versent_automate_dbt_dimensional.effective_date_column('from') }},
-                {{ versent_automate_dbt_dimensional.effective_date_column('to') }},
+                {{ dbt_versent_dimensional_automate.effective_date_column('from') }},
+                {{ dbt_versent_dimensional_automate.effective_date_column('to') }},
                 is_current,
             {%- endif -%}
             -- audit columns
-            {{ versent_automate_dbt_dimensional.audit_columns() }}
+            {{ dbt_versent_dimensional_automate.audit_columns() }}
         from
             source
         where
