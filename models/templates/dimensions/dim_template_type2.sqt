@@ -12,7 +12,7 @@ type2:
     as_of_date: as_of_date
 {%- endset -%}
 {% set metadata_dict = fromyaml(yaml_metadata) %}
-{{ versent_automate_dbt_dimensional.dim(
+{{ dbt_versent_dimensional_automate.dim(
     name    = metadata_dict['name'],
     source  = metadata_dict['source'],
     payload = metadata_dict['payload'],

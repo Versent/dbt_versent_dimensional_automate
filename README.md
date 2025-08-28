@@ -74,7 +74,7 @@ type2:
 {% set metadata_dict = fromyaml(yaml_metadata) %}
 
 # Call the macro
-{{ versent_automate_dbt_dimensional.dim(
+{{ dbt_versent_dimensional_automate.dim(
     name    = metadata_dict['name'],
     source  = metadata_dict['source'],
     payload = metadata_dict['payload'],

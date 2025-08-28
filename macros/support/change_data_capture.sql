@@ -6,9 +6,9 @@
             {%- set as_of_date_source = type2.as_of_date %}
             {%- set effective_from = var('effective_from_name', 'effective_from') -%}
             {%- set effective_to = var('effective_to_name', 'effective_to') %}                  
-            {{ versent_automate_dbt_dimensional.effective_from_datetime(business_key, as_of_date_source)}}  as {{ effective_from }},
-            {{ versent_automate_dbt_dimensional.effective_to_datetime(business_key, as_of_date_source)}}  as {{ effective_to }},
-            {{ versent_automate_dbt_dimensional.is_current(business_key, as_of_date_source)}}  as is_current,
+            {{ dbt_versent_dimensional_automate.effective_from_datetime(business_key, as_of_date_source)}}  as {{ effective_from }},
+            {{ dbt_versent_dimensional_automate.effective_to_datetime(business_key, as_of_date_source)}}  as {{ effective_to }},
+            {{ dbt_versent_dimensional_automate.is_current(business_key, as_of_date_source)}}  as is_current,
 
 {%- endmacro %}
 {%- macro early_date() -%}
@@ -50,9 +50,9 @@
     ) -%}
     iff(
     -- previous_date
-        {{ versent_automate_dbt_dimensional.previous_date(business_key, as_of_date_source)}}
+        {{ dbt_versent_dimensional_automate.previous_date(business_key, as_of_date_source)}}
         is null, 
-        {{ versent_automate_dbt_dimensional.early_date() }}, 
+        {{ dbt_versent_dimensional_automate.early_date() }}, 
         as_of_date)
 
 
@@ -63,14 +63,14 @@
     ) -%}
     coalesce(
         -- next_date - 1 very small bit
-            {{ versent_automate_dbt_dimensional.next_date(business_key, as_of_date_source)}} 
+            {{ dbt_versent_dimensional_automate.next_date(business_key, as_of_date_source)}} 
             -- {{ target.type }}
             {% if target.type == "databricks" %}
             - INTERVAL 1 microsecond     
             {% elif target.type == "snowflake" %}          
             - INTERVAL '1 MICROSECONDS'
             {% endif %}, 
-        {{ versent_automate_dbt_dimensional.late_date() }}
+        {{ dbt_versent_dimensional_automate.late_date() }}
         )
 
     {%- endmacro%}
@@ -80,7 +80,7 @@
     ) -%}
     iff(
         -- next_date
-        {{ versent_automate_dbt_dimensional.next_date(business_key, as_of_date_source)}} is null,
+        {{ dbt_versent_dimensional_automate.next_date(business_key, as_of_date_source)}} is null,
         true,
         false
     )    

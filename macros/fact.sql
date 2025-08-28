@@ -17,17 +17,17 @@ with
     select
         bridge.{{primary_key}},
         -- Add Type 1 dimension columns (if type 1 dims exist)
-        {{ versent_automate_dbt_dimensional.dimension_columns(type1_dims) }}
+        {{ dbt_versent_dimensional_automate.dimension_columns(type1_dims) }}
         -- Add Type 2 dimension columns (if type 2 dims exist)
-        {{ versent_automate_dbt_dimensional.dimension_columns(type2_dims) }}
-        {{ versent_automate_dbt_dimensional.payload_columns(payload)}},
-        {{ versent_automate_dbt_dimensional.audit_columns('bridge') }}
+        {{ dbt_versent_dimensional_automate.dimension_columns(type2_dims) }}
+        {{ dbt_versent_dimensional_automate.payload_columns(payload)}},
+        {{ dbt_versent_dimensional_automate.audit_columns('bridge') }}
     from
         bridge
         -- join Type 1 Dimensions (if they exist)
-        {{versent_automate_dbt_dimensional.join_dimensions(type1_dims, 'type1')}}                
+        {{dbt_versent_dimensional_automate.join_dimensions(type1_dims, 'type1')}}                
         -- join Type 2 Dimensions (if they exist)
-        {{versent_automate_dbt_dimensional.join_dimensions(type2_dims, 'type2')}}          
+        {{dbt_versent_dimensional_automate.join_dimensions(type2_dims, 'type2')}}          
     
 {%- endmacro %}
 
