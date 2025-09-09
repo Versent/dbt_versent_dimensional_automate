@@ -1,3 +1,10 @@
+-- depends_on: {{ ref('__int_dim_date') }}
+{{
+    config(
+        enabled= false
+    )
+}}
+
 {%- set yaml_metadata -%}
 name: date
 source: __int_dim_date

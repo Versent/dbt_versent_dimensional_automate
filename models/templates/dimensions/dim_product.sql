@@ -1,3 +1,10 @@
+-- depends_on: {{ ref('__int_dim_product') }}
+{{
+    config(
+        enabled= false
+    )
+}}
+
 {%- set yaml_metadata -%}
 name: product
 source: __int_dim_product

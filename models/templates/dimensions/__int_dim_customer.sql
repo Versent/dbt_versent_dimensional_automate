@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled = false
+    )
+}}
+
 with dim_customer as (
     select 501 as bk_customer, 
             'abc pty ltd' as customer_name, 

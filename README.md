@@ -163,11 +163,21 @@ payload:
 ```
 
 ## Example Templates
+We provide example models to demonstrate how to use the macros in this package.
+These are stored under  **models/templates/** .
 
-We provide example models to demonstrate how to use the macros in this package. 
-These are stored under **models/templates/** but use the **.sqt** extension instead of **.sql** to prevent them from being built automatically when the package is installed.
+Each template includes a config(enabled = False) flag by default, so they are not built automatically when the package is installed.
 
 ### How to Use the Templates
-1. Navigate to the models/templates/ directory.
-2. Rename the desired .sqt file to .sql.
+1. Navigate to the **models/templates/** directory.
+2. Open the desired template and change the value of **enabled" in the config block at the top of the file to:
+```bash
+{{ config(
+    enabled = True
+    ) }}
+```
 3. Run dbt build to test it.
+
+### Notes on Dependencies
+Templates prefixed with **_dim___** or **_fact___** depend on an **_int___** (intermediate) model as their source.
+Make sure to build the corresponding  **_int___**  model first, since it provides the raw data required by the dimension or fact template.

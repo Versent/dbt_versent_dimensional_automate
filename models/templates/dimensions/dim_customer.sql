@@ -1,13 +1,17 @@
+-- depends_on: {{ ref('__int_dim_customer') }}
+{{
+    config(
+        enabled= false
+    )
+}}
+
 {%- set yaml_metadata -%}
 name: customer
-source: __int_dim_type_II__template
+source: __int_dim_customer
 payload:
-    - first_name
-    - last_name
-    - first_order_date
-    - most_recent_order_date
-    - number_of_orders
-    - lifetime_value
+    - customer_name
+    - customer_type
+    - country
 type2:
     as_of_date: as_of_date
 {%- endset -%}

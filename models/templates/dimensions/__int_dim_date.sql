@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled = false
+    )
+}}
+
 with 
     dim_date as (
         select 20240101 as bk_date, 

@@ -1,7 +1,8 @@
 -- depends_on: {{ ref('__int_fact__template') }}
 {{ config(
     materialized = 'table',
-    unique_key = 'bk_sales_order'
+    unique_key = 'bk_sales_order',
+    enabled = false
 )}}
 
 {%- set yaml_metadata -%}
