@@ -170,7 +170,7 @@ Each template includes a config(enabled = False) flag by default, so they are no
 
 ### How to Use the Templates
 1. Navigate to the **models/templates/** directory.
-2. Open the desired template and change the value of **enabled" in the config block at the top of the file to:
+2. Open the desired template and change the value of **enabled** in the config block at the top of the file to **True** as shown below:
 ```bash
 {{ config(
     enabled = True
