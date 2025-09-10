@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled= false
+    )
+}}
+
 with sales_order as (
     select 
         1 as bk_sales_order,

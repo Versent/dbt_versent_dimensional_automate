@@ -1,3 +1,10 @@
+-- depends_on: {{ ref('__int_dim_type_II__template') }}
+{{
+    config(
+        enabled= false
+    )
+}}
+
 {%- set yaml_metadata -%}
 name: customer
 source: __int_dim_type_II__template

@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled = false
+    )
+}}
+
 with
     seed as (select 1 as business_key),
     customer_1 as (

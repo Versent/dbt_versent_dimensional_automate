@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled = false
+    )
+}}
+
 with dim_product as (
     select 101 as bk_product, 
             'laptop model x' as product_name, 
