@@ -12,15 +12,17 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('dim_customer')
-              field: dim_customer_sid
+              arguments:
+                to: ref('dim_customer')
+                field: dim_customer_sid
 
       - name: dim_manufacturing_product_sid
         tests:
           - not_null
           - relationships:
-              to: ref('dim_product')
-              field: dim_product_sid
+              arguments:
+                to: ref('dim_product')
+                field: dim_product_sid
 
       - name: quantity_sold
         tests:
